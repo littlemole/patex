@@ -1,0 +1,9 @@
+prefix=/usr/local
+includedir=${prefix}/include
+libdir=${prefix}/lib
+
+Name: patex
+Description: minidom for expat
+Version: 0.0.1
+Cflags: -I${includedir}
+Libs: -L${libdir} -lexpat -lpthread 
