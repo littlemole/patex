@@ -62,6 +62,8 @@ TEST_F(BasicTest, SimpleXml)
 	xml::NodePtr url = elem->childNodes()->getChildByName("url");
 	dump_node(url);
 
+	((xml::Element*)url.get())->setAttributeNS("ns1:key","urn:valid/something","the value");
+	dump_node(elem);
 }
 
 

@@ -735,6 +735,44 @@ void Element::setAttribute(const std::string &key, const std::string &value)
     attribs_->item(key)->quote = '"';
 }
 
+void Element::setAttributeNS(const std::string &key, const std::string& ns, const std::string &value)
+{
+    std::string prefix = "";
+    std::string localname = key;
+    size_t pos = key.find(":");
+    if( pos != std::string::npos)
+    {
+        prefix = key.substr(0,pos);
+        localname = key.substr(pos+1);
+        std::string existing_ns = getNSfromPrefix(prefix);
+        if( existing_ns != ns)
+        {
+            setAttribute(std::string("xmlns:")+prefix,ns);
+        }
+    }
+    else
+    {
+        std::string default_ns = defaultNamespace();
+        if( default_ns != ns)
+        {
+            setAttribute(std::string("xmlns"),ns);
+        }
+    }
+
+    AttrPtr att = attribs_->item(key);
+    if (!att)
+    {
+        attribs_->add(key, value);
+    }
+    else
+    {
+        att->nodeValue(value);
+    }
+
+
+    attribs_->item(key)->quote = '"';
+}
+
 std::string Element::attr(const std::string &key)
 {
     AttrPtr att = attribs_->item(key);
@@ -757,6 +795,11 @@ AttrPtr Element::getAttribute(int index)
 AttrPtr Element::getAttribute(const std::string &name)
 {
     return attribs_->item(name);
+}
+
+AttrPtr Element::getAttributeNS(const std::string &name, const std::string& ns)
+{
+    return attribs_->item(name,ns);
 }
 
 std::string Element::atts()
