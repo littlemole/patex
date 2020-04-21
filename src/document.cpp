@@ -245,7 +245,19 @@ ElementPtr Document::createElementNS(const std::string &name, const std::string 
 	}
 
 	ElementPtr e = ElementPtr(new Element(shared_from_this(), name));
-	e->setAttribute("xmlns", ns);
+
+	std::string prefix = "";
+	size_t pos = name.find(":");
+	if(pos != std::string::npos)
+	{
+		prefix = name.substr(0,pos);
+		e->setAttribute( std::string("xmlns:")+prefix, ns);
+	}
+	else
+	{
+		e->setAttribute( std::string("xmlns"), ns);
+	}
+
 	return e;
 }
 
