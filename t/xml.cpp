@@ -64,6 +64,10 @@ TEST_F(BasicTest, SimpleXml)
 
 	((xml::Element*)url.get())->setAttributeNS("ns1:key","urn:valid/something","the value");
 	dump_node(elem);
+
+	auto el = doc->createElementNS("ns2:myel", "http://thens/");
+	elem->appendChild(el);
+	dump_node(elem);
 }
 
 
