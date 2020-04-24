@@ -782,6 +782,15 @@ std::string Element::attr(const std::string &key)
         return att->nodeValue();
 }
 
+std::string Element::attr(const std::string &key, const std::string& ns)
+{
+    AttrPtr att = attribs_->item(key,ns);
+    if (!att)
+        return "";
+    else
+        return att->nodeValue();
+}
+
 NamedNodeMapPtr Node::attributes()
 {
     return attribs_;

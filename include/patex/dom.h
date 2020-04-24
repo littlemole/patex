@@ -262,6 +262,7 @@ public:
     void setAttributeNS(const std::string &key, const std::string &ns, const std::string &value);
     void removeAttribute(const std::string &a);
     std::string attr(const std::string &key);
+    std::string attr(const std::string &key, const std::string& ns);
 
     //helpers
     ElementPtr getElementById(const std::string &id);

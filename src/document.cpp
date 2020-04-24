@@ -89,7 +89,7 @@ Element *XMLParser::parse(DocumentPtr d, Element *root, const std::string &input
 
 void XMLParser::character(const XML_Char *s, int len)
 {
-	std::string t = trim(std::string(s, len));
+	std::string t = std::string(s,len);//trim(std::string(s, len));
 	if (t.size() == 0)
 		return;
 
