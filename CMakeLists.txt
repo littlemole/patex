@@ -54,7 +54,10 @@ IF (WIN32)
 
 	set(BUILDFLAGS "-await ${FLAGS}")
 
-	set(LIBS ${GTEST_LIBRARIES} ${OPENSSL_LIBRARIES} ${STDLIB} -lexpat  )
+	find_library(EXPAT_LIBRARY NAMES expat)
+	set(LIBS ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
+
+
 
 	set(LIBS debug ${CMAKE_PROJECT_NAME} optimized ${CMAKE_PROJECT_NAME} ${LIBS} )
 
@@ -86,6 +89,7 @@ set(CMAKE_CXX_FLAGS  		"${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 
 include_directories(include)
 include_directories(${EXPAT_INCLUDE_DIR})
+include_directories(${GTEST_INCLUDE_DIR})
 
 ############################################
 # sources
