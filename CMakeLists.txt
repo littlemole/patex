@@ -54,7 +54,7 @@ IF (WIN32)
 
 	set(BUILDFLAGS "-await ${FLAGS}")
 
-	find_library(EXPAT_LIBRARY NAMES expat)
+	find_library(EXPAT_LIBRARY NAMES libexpat)
 	set(LIBS ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
 
 
