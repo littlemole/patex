@@ -1,0 +1,4 @@
+Source: patex
+Version: 0.0.3
+Description: c++ DOM wrapper around expat
+Build-Depends: gtest, expat

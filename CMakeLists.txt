@@ -26,7 +26,13 @@ endif()
 # basic dependecies
 ############################################
 
+option(WITH_TEST "run tests (default:off)" OFF)
+if(WITH_TEST)
 find_package(GTest REQUIRED)
+endif()
+
+find_package(EXPAT)
+#Message("EXPAT: "${EXPAT_INCLUDE_DIR})
 
 
 ############################################
@@ -87,9 +93,14 @@ set(CMAKE_CXX_FLAGS  		"${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 # include directories
 ############################################
 
+#Message("INCLUDES: "${EXPAT_INCLUDE_DIR})
+
 include_directories(include)
 include_directories(${EXPAT_INCLUDE_DIR})
+
+if(WITH_TEST)
 include_directories(${GTEST_INCLUDE_DIR})
+endif()
 
 ############################################
 # sources
@@ -105,7 +116,7 @@ file(GLOB HEADERS "include/patex/*.h")
 
 add_library(patex STATIC ${SOURCES})
 
-
+if(WITH_TEST)
 ############################################
 # tests
 ############################################
@@ -129,7 +140,7 @@ add_test(NAME AllTests COMMAND Tests)
 
 #file(COPY pem DESTINATION .)
 
- 
+endif() 
 ############################################
 # install
 ############################################
