@@ -1,0 +1,15 @@
+{
+    "default-registry": {
+      "kind": "git",
+      "repository": "https://github.com/microsoft/vcpkg",
+      "baseline": "eefee7408133f3a0fef711ef9c6a3677b7e06fd7" 
+    },
+    "registries": [
+      {
+        "kind": "git",
+        "repository": "https://github.com/littlemole/vcpkg-registry",
+        "baseline": "678cb9f02f3e5909983d85f62bdc80a597f29b6a",
+        "packages": [ "beison", "beicode" ]
+      }
+    ]
+  }
