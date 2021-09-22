@@ -1,7 +1,9 @@
 {
-  "name": "patex",
-  "version": "0.0.5",
-  "dependencies": [
-     "gtest", "expat", "jsoncpp"
-  ]
+    "name": "patex",
+    "version-string": "f094cdab6d98ad261cbfc456a914b5970900e68d",
+    "dependencies": [
+        "gtest",
+        "expat",
+        "jsoncpp"
+    ]
 }
