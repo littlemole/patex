@@ -1,6 +1,6 @@
 {
     "name": "patex",
-    "version-string": "5b3e07d2c07186c49843d406102bfc4213817086",
+    "version-string": "f722137f787c665e965dfca97825d1a19dcf6850",
     "dependencies": [
         "gtest",
         "expat",
