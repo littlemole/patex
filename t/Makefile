@@ -5,11 +5,11 @@ PKG_INC=$(shell pkg-config expat --cflags)
 PKG_LIB=$(shell pkg-config expat --libs)
 
 # if not g++ we assume clang++
-DEFAULT_LIBS = $(TS) -stdlib=libc++ -fcoroutines-ts  -lc++abi -std=c++17
-DEFAULT_OPTS = $(TS) -std=c++17 -stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED 
+DEFAULT_LIBS = $(TS) -stdlib=libc++ -fcoroutines-ts  -lc++abi -std=c++20
+DEFAULT_OPTS = $(TS) -std=c++20 -stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED 
 
 ifeq ($(CXX),g++)
-DEFAULT_OPTS = -std=c++17
+DEFAULT_OPTS = -std=c++20 -fcoroutines
 DEFAULT_LIBS = 
 endif
 
