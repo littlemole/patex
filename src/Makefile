@@ -5,7 +5,7 @@ release : override DEBUG = -O3
 DEFAULT_OPTS = -std=c++20 -fcoroutines
 
 ifneq ($(CXX),g++)
-DEFAULT_OPTS = $(TS)  -std=c++20 -stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED 
+DEFAULT_OPTS = $(TS)  -std=c++20 -stdlib=libc++ -fcoroutines-ts
 endif
 
 OPTIONS = -pthread -D_REENTRANT $(DEFAULT_OPTS)
