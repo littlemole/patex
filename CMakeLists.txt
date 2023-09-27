@@ -5,7 +5,7 @@ cmake_minimum_required(VERSION 3.22)
 project(patex)
 cmake_policy(SET CMP0054 NEW)
 include(CTest)
-
+set(VERSION 0.0.6)
 ############################################
 # c++ std
 ############################################
@@ -32,7 +32,7 @@ find_package(GTest REQUIRED)
 endif()
 
 find_package(EXPAT)
-#Message("EXPAT: "${EXPAT_INCLUDE_DIR})
+Message("EXPAT: " ${EXPAT_INCLUDE_DIR})
 
 
 ############################################
@@ -61,11 +61,10 @@ IF (WIN32)
 	set(BUILDFLAGS "-await ${FLAGS}")
 
 	find_library(EXPAT_LIBRARY NAMES libexpat)
-	set(LIBS ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
+	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
 
 
-
-	set(LIBS debug ${CMAKE_PROJECT_NAME} optimized ${CMAKE_PROJECT_NAME} ${LIBS} )
+#	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
 
 
  ELSEIF (UNIX)
@@ -145,9 +144,28 @@ endif()
 # install
 ############################################
 
-install(TARGETS patex DESTINATION lib)
+install(TARGETS patex DESTINATION lib EXPORT patex-targets)
 
 install(DIRECTORY include/patex DESTINATION include)
 
 install(FILES patex.pc DESTINATION lib/pkgconfig)
+
+install(EXPORT patex-targets DESTINATION lib/patex-${VERSION})
+
+############################################
+# Create and install package configuration 
+# and version files.
+############################################
+
+configure_file(
+   ${patex_SOURCE_DIR}/patex-config.cmake.in
+   ${patex_BINARY_DIR}/patex-config.cmake @ONLY)
+
+configure_file(
+   ${patex_SOURCE_DIR}/patex-config-version.cmake.in
+   ${patex_BINARY_DIR}/patex-config-version.cmake @ONLY)
+
+install(FILES ${patex_BINARY_DIR}/patex-config.cmake
+         ${patex_BINARY_DIR}/patex-config-version.cmake
+         DESTINATION lib/patex-${VERSION})
 
