@@ -1,11 +1,14 @@
 ############################################
 # preamble
 ############################################
+
 cmake_minimum_required(VERSION 3.22)
+
 project(patex)
-cmake_policy(SET CMP0054 NEW)
 include(CTest)
 set(VERSION 0.0.6)
+
+
 ############################################
 # c++ std
 ############################################
@@ -14,6 +17,7 @@ set(CMAKE_CXX_STANDARD 20)
 set(CMAKE_CXX_STANDARD_REQUIRED ON)
 set(CMAKE_CXX_EXTENSIONS OFF)
 
+
 ############################################
 # debug mode produces libs with d suffix
 ############################################
@@ -21,6 +25,7 @@ set(CMAKE_CXX_EXTENSIONS OFF)
 if(NOT CMAKE_DEBUG_POSTFIX)
   set(CMAKE_DEBUG_POSTFIX d)
 endif()
+
 
 ############################################
 # basic dependecies
@@ -46,7 +51,7 @@ set(FLAGS "")
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(STDLIB "c++abi")
     set(LINKERFLAGS "-stdlib=libc++ -fcoroutines-ts")
-    set(FLAGS "-stdlib=libc++ -fcoroutines-ts -D_RESUMABLE_FUNCTIONS_SUPPORTED")
+    set(FLAGS "-stdlib=libc++ -fcoroutines-ts ")
 endif()
 
 
@@ -58,10 +63,11 @@ IF (WIN32)
 
 	set(OSLIBS "Ws2_32" "Rpcrt4")
 
-	set(BUILDFLAGS "-await ${FLAGS}")
+	set(BUILDFLAGS "${FLAGS}")
 
-	find_library(EXPAT_LIBRARY NAMES libexpat)
-	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
+#	find_library(EXPAT_LIBRARY NAMES libexpat)
+#	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
+	set(LIBS ${CMAKE_PROJECT_NAME} expat ${GTEST_LIBRARIES} ${STDLIB}  )
 
 
 #	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
@@ -73,9 +79,9 @@ IF (WIN32)
 
     set(BUILDFLAGS " ${FLAGS}")
 
-	set(LIBS ${GTEST_LIBRARIES} -lexpat ${STDLIB}  )
+	set(LIBS ${GTEST_LIBRARIES} expat ${STDLIB}  )
 
-	set(LIBS debug ${CMAKE_PROJECT_NAME} optimized ${CMAKE_PROJECT_NAME} ${LIBS} )
+	set(LIBS ${CMAKE_PROJECT_NAME} ${LIBS} )
 
 ENDIF ()
 
@@ -95,11 +101,11 @@ set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 #Message("INCLUDES: "${EXPAT_INCLUDE_DIR})
 
 include_directories(include)
-include_directories(${EXPAT_INCLUDE_DIR})
+#include_directories(${EXPAT_INCLUDE_DIR})
 
-if(WITH_TEST)
-include_directories(${GTEST_INCLUDE_DIR})
-endif()
+#if(WITH_TEST)
+#include_directories(${GTEST_INCLUDE_DIR})
+#endif()
 
 ############################################
 # sources
@@ -137,20 +143,19 @@ target_link_libraries(Tests ${LIBS} ${OSLIBS} )
 
 add_test(NAME AllTests COMMAND Tests)
 
-#file(COPY pem DESTINATION .)
 
 endif() 
+
+
 ############################################
 # install
 ############################################
 
 install(TARGETS patex DESTINATION lib EXPORT patex-targets)
-
 install(DIRECTORY include/patex DESTINATION include)
-
 install(FILES patex.pc DESTINATION lib/pkgconfig)
-
 install(EXPORT patex-targets DESTINATION lib/patex-${VERSION})
+
 
 ############################################
 # Create and install package configuration 
