@@ -64,10 +64,14 @@ IF (WIN32)
 	set(OSLIBS "Ws2_32" "Rpcrt4")
 
 	set(BUILDFLAGS "${FLAGS}")
+	find_library(EXPAT_LIBRARY NAMES libexpat.lib)
+	find_library(EXPATD_LIBRARY NAMES libexpatd.lib)
+message("EXPAT:  ${EXPAT_LIBRARY}")
+message("EXPATD:  ${EXPATD_LIBRARY}")
 
 #	find_library(EXPAT_LIBRARY NAMES libexpat)
 #	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
-	set(LIBS ${CMAKE_PROJECT_NAME} debug libexpatd optimized libexpat ${GTEST_LIBRARIES} ${STDLIB}  )
+	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} ${GTEST_LIBRARIES} ${STDLIB}  )
 
 
 #	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
