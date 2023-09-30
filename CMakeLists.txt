@@ -101,7 +101,7 @@ set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 #Message("INCLUDES: "${EXPAT_INCLUDE_DIR})
 
 include_directories(include)
-#include_directories(${EXPAT_INCLUDE_DIR})
+include_directories(${EXPAT_INCLUDE_DIR})
 
 #if(WITH_TEST)
 #include_directories(${GTEST_INCLUDE_DIR})
