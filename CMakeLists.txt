@@ -8,6 +8,7 @@ project(patex)
 include(CTest)
 set(VERSION 0.0.6)
 
+#set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
 
 ############################################
 # c++ std
@@ -32,9 +33,9 @@ endif()
 ############################################
 
 option(WITH_TEST "run tests (default:off)" ON)
-if(WITH_TEST)
-find_package(GTest REQUIRED)
-endif()
+#if(WITH_TEST)
+#find_package(GTest REQUIRED)
+#endif()
 
 find_package(EXPAT)
 Message("EXPAT: " ${EXPAT_INCLUDE_DIR})
@@ -54,7 +55,6 @@ if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(FLAGS "-stdlib=libc++ -fcoroutines-ts ")
 endif()
 
-
 ############################################
 # OS support (Linux/Windows)
 ############################################
@@ -71,7 +71,7 @@ message("EXPATD:  ${EXPATD_LIBRARY}")
 
 #	find_library(EXPAT_LIBRARY NAMES libexpat)
 #	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
-	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} ${GTEST_LIBRARIES} ${STDLIB}  )
+	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} gtest ${STDLIB}  )
 
 
 #	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
@@ -83,7 +83,7 @@ message("EXPATD:  ${EXPATD_LIBRARY}")
 
     set(BUILDFLAGS " ${FLAGS}")
 
-	set(LIBS ${GTEST_LIBRARIES} expat ${STDLIB}  )
+	set(LIBS gtest expat ${STDLIB}  )
 
 	set(LIBS ${CMAKE_PROJECT_NAME} ${LIBS} )
 
@@ -97,6 +97,28 @@ set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${LINKERFLAGS}" )
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -DMOL_PROMISE_DEBUG")
 set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 
+############################################
+# gtest
+############################################
+#if(WITH_TEST)
+
+include(FetchContent)
+FetchContent_Declare(
+  googletest
+  # Specify the commit you depend on and update it regularly.
+  URL https://github.com/google/googletest/archive/f8d7d77c06936315286eb55f8de22cd23c188571.zip
+)
+# For Windows: Prevent overriding the parent project's compiler/linker settings
+set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+#FetchContent_MakeAvailable(googletest)
+
+FetchContent_GetProperties(googletest)
+if(NOT googletest_POPULATED)
+  FetchContent_Populate(googletest)
+  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+#endif()
 
 ############################################
 # include directories

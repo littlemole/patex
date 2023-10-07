@@ -16,19 +16,10 @@ ENV BUILDCHAIN=${BUILDCHAIN}
 
 RUN echo -e "BC: $CXX $BUILDCHAIN"
 
-# compile gtest with given compiler
-RUN cd /usr/src/gtest && \
-  if [ "$CXX" = "g++" ] ; then \
-    cmake .; \
-  else \
-    cmake -DCMAKE_CXX_COMPILER=$CXX -DCMAKE_CXX_FLAGS=-stdlib=libc++ .  ; \
-  fi && \
-  make && \
-  cp /usr/src/gtest/lib/libgtest.a /usr/lib/x86_64-linux-gnu/libgtest.a
-  #ln -s /usr/src/gtest/lib/libgtest.a /usr/lib/libgtest.a
-
 RUN mkdir -p /usr/local/src/patex
 ADD . /usr/local/src/patex
 
+# install gtest if not using cmake
+RUN /usr/local/src/patex/docker/gtest.sh
 
 RUN /usr/local/src/patex/docker/run.sh
