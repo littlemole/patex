@@ -71,7 +71,7 @@ message("EXPATD:  ${EXPATD_LIBRARY}")
 
 #	find_library(EXPAT_LIBRARY NAMES libexpat)
 #	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
-	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} gtest ${STDLIB}  )
+	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY}  ${STDLIB}  )
 
 
 #	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
@@ -102,6 +102,12 @@ set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 ############################################
 #if(WITH_TEST)
 
+if(WIN32)
+	find_package(GTest REQUIRED)
+	set( LIBS "${GTEST_LIBRARIES}" ${LIBS} )
+	message("LIBS:   ${LIBS}")
+else()
+
 include(FetchContent)
 FetchContent_Declare(
   googletest
@@ -116,6 +122,10 @@ FetchContent_GetProperties(googletest)
 if(NOT googletest_POPULATED)
   FetchContent_Populate(googletest)
   add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+endif()
+
+	set( LIBS "gtest" "${LIBS}")
+
 endif()
 
 #endif()
