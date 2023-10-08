@@ -14,6 +14,9 @@ ENV CXX=${CXX}
 ARG BUILDCHAIN=make
 ENV BUILDCHAIN=${BUILDCHAIN}
 
+ARG WITH_TEST=On
+ENV WITH_TEST=${WITH_TEST}
+
 RUN echo -e "BC: $CXX $BUILDCHAIN"
 
 RUN mkdir -p /usr/local/src/patex

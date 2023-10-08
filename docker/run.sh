@@ -20,9 +20,12 @@ else
 
     mkdir build
     cd build
-    cmake .. -DCMAKE_CXX_COMPILER=$CXX 
+    cmake .. -DCMAKE_CXX_COMPILER=$CXX  -DWITH_TEST=$WITH_TEST
     make 
-    make test
+    if [ "$WITH_TEST" == "On" ]
+    then
+	    make test
+    fi
     make install
 fi
 

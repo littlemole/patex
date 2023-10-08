@@ -8,7 +8,8 @@ project(patex)
 include(CTest)
 set(VERSION 0.0.6)
 
-#set(CMAKE_EXPORT_COMPILE_COMMANDS 1)
+option(WITH_TEST "run tests (default:off)" ON)
+
 
 ############################################
 # c++ std
@@ -32,13 +33,7 @@ endif()
 # basic dependecies
 ############################################
 
-option(WITH_TEST "run tests (default:off)" ON)
-#if(WITH_TEST)
-#find_package(GTest REQUIRED)
-#endif()
-
 find_package(EXPAT)
-Message("EXPAT: " ${EXPAT_INCLUDE_DIR})
 
 
 ############################################
@@ -66,26 +61,17 @@ IF (WIN32)
 	set(BUILDFLAGS "${FLAGS}")
 	find_library(EXPAT_LIBRARY NAMES libexpat.lib)
 	find_library(EXPATD_LIBRARY NAMES libexpatd.lib)
-message("EXPAT:  ${EXPAT_LIBRARY}")
-message("EXPATD:  ${EXPATD_LIBRARY}")
 
-#	find_library(EXPAT_LIBRARY NAMES libexpat)
-#	set(LIBS ${CMAKE_PROJECT_NAME} ${GTEST_LIBRARIES} ${EXPAT_LIBRARY} ${OPENSSL_LIBRARIES} ${STDLIB}  )
-	set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY}  ${STDLIB}  )
+  find_package(GTest REQUIRED)
 
-
-#	set(LIBS  ${CMAKE_PROJECT_NAME} ${LIBS} )
-
+  set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} ${GTEST_LIBRARIES} ${STDLIB}  )
 
  ELSEIF (UNIX)
 
     set(OSLIBS "pthread" "uuid")
-
     set(BUILDFLAGS " ${FLAGS}")
-
-	set(LIBS gtest expat ${STDLIB}  )
-
-	set(LIBS ${CMAKE_PROJECT_NAME} ${LIBS} )
+  	set(LIBS expat ${STDLIB}  )
+	  set(LIBS ${CMAKE_PROJECT_NAME} ${LIBS} )
 
 ENDIF ()
 
@@ -100,48 +86,36 @@ set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 ############################################
 # gtest
 ############################################
-#if(WITH_TEST)
 
-if(WIN32)
-	find_package(GTest REQUIRED)
-	set( LIBS "${GTEST_LIBRARIES}" ${LIBS} )
-	message("LIBS:   ${LIBS}")
-else()
+if(WITH_TEST)
 
-include(FetchContent)
-FetchContent_Declare(
-  googletest
-  # Specify the commit you depend on and update it regularly.
-  URL https://github.com/google/googletest/archive/f8d7d77c06936315286eb55f8de22cd23c188571.zip
-)
-# For Windows: Prevent overriding the parent project's compiler/linker settings
-set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
-#FetchContent_MakeAvailable(googletest)
+  include(FetchContent)
+  FetchContent_Declare(
+    googletest
+    # Specify the commit you depend on and update it regularly.
+    URL https://github.com/google/googletest/archive/f8d7d77c06936315286eb55f8de22cd23c188571.zip
+  )
+  # For Windows: Prevent overriding the parent project's compiler/linker settings
+  set(gtest_force_shared_crt ON CACHE BOOL "" FORCE)
+  #FetchContent_MakeAvailable(googletest)
 
-FetchContent_GetProperties(googletest)
-if(NOT googletest_POPULATED)
-  FetchContent_Populate(googletest)
-  add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
-endif()
+  FetchContent_GetProperties(googletest)
+  if(NOT googletest_POPULATED)
+    FetchContent_Populate(googletest)
+    add_subdirectory(${googletest_SOURCE_DIR} ${googletest_BINARY_DIR} EXCLUDE_FROM_ALL)
+  endif()
 
 	set( LIBS "gtest" "${LIBS}")
 
 endif()
 
-#endif()
-
 ############################################
 # include directories
 ############################################
 
-#Message("INCLUDES: "${EXPAT_INCLUDE_DIR})
-
 include_directories(include)
 include_directories(${EXPAT_INCLUDE_DIR})
 
-#if(WITH_TEST)
-#include_directories(${GTEST_INCLUDE_DIR})
-#endif()
 
 ############################################
 # sources
@@ -158,6 +132,7 @@ file(GLOB HEADERS "include/patex/*.h")
 add_library(patex STATIC ${SOURCES})
 
 if(WITH_TEST)
+
 ############################################
 # tests
 ############################################
@@ -176,9 +151,7 @@ target_link_libraries(Tests ${LIBS} ${OSLIBS} )
 # run tests
 ############################################
 
-
 add_test(NAME AllTests COMMAND Tests)
-
 
 endif() 
 
