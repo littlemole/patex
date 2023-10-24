@@ -66,6 +66,9 @@ IF (WIN32)
 
     set(LIBS ${CMAKE_PROJECT_NAME} expat::expat ${GTEST_LIBRARIES} ${STDLIB}  )
 
+    get_target_property(expat_INCLUDE_DIR expat::expat INTERFACE_INCLUDE_DIRECTORIES)
+  	include_directories(${expat_INCLUDE_DIR})
+
 ELSEIF (UNIX)
 
     set(OSLIBS "pthread" "uuid")
@@ -113,8 +116,6 @@ endif()
 ############################################
 
 include_directories(include)
-include_directories(${GTEST_INCLUDE_DIR})
-
 
 ############################################
 # sources
