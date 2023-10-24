@@ -113,7 +113,7 @@ endif()
 ############################################
 
 include_directories(include)
-include_directories(${EXPAT_INCLUDE_DIR})
+include_directories(${GTEST_INCLUDE_DIR})
 
 
 ############################################
