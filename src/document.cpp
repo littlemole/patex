@@ -122,7 +122,7 @@ void XMLParser::start(const XML_Char *el, const XML_Char **attr)
 	parent_ = e.get();
 }
 
-void XMLParser::end(const XML_Char *el)
+void XMLParser::end(const XML_Char* /*el*/ )
 {
 	if (parent_->hasChildNodes())
 		parent_->isAlone(false);
