@@ -33,7 +33,7 @@ endif()
 # basic dependecies
 ############################################
 
-find_package(EXPAT)
+find_package(EXPAT CONFIG)
 
 
 ############################################
@@ -60,22 +60,17 @@ endif()
 
 IF (WIN32)
 
-	set(OSLIBS "Ws2_32" "Rpcrt4")
+	  set(OSLIBS "Ws2_32" "Rpcrt4")
 
-	set(BUILDFLAGS "${FLAGS}")
-	find_library(EXPAT_LIBRARY NAMES libexpat.lib)
-	find_library(EXPATD_LIBRARY NAMES libexpatd.lib)
+    find_package(GTest REQUIRED)
 
-  find_package(GTest REQUIRED)
+    set(LIBS ${CMAKE_PROJECT_NAME} expat::expat ${GTEST_LIBRARIES} ${STDLIB}  )
 
-  set(LIBS ${CMAKE_PROJECT_NAME} debug ${EXPATD_LIBRARY} optimized ${EXPAT_LIBRARY} ${GTEST_LIBRARIES} ${STDLIB}  )
-
- ELSEIF (UNIX)
+ELSEIF (UNIX)
 
     set(OSLIBS "pthread" "uuid")
-    set(BUILDFLAGS " ${FLAGS}")
-  	set(LIBS expat ${STDLIB}  )
-	  set(LIBS ${CMAKE_PROJECT_NAME} ${LIBS} )
+
+	  set(LIBS ${CMAKE_PROJECT_NAME} expat ${STDLIB} ${LIBS} )
 
 ENDIF ()
 
@@ -85,7 +80,7 @@ ENDIF ()
 
 set(CMAKE_EXE_LINKER_FLAGS  "${CMAKE_EXE_LINKER_FLAGS} ${LINKERFLAGS}" )
 set(CMAKE_CXX_FLAGS_DEBUG   "${CMAKE_CXX_FLAGS_DEBUG} -DMOL_PROMISE_DEBUG")
-set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
+set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${FLAGS}")
 
 ############################################
 # gtest
