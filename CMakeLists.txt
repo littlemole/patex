@@ -42,7 +42,11 @@ find_package(EXPAT)
 
 set(LINKERFLAGS "")
 set(STDLIB "")
-set(FLAGS "")
+if(WIN32)
+    set(FLAGS "/W3")
+else()
+    set(FLAGS "-Wall -Wextra")
+endif()
 
 if ("${CMAKE_CXX_COMPILER_ID}" STREQUAL "Clang")
     set(STDLIB "c++abi")
@@ -87,7 +91,7 @@ set(CMAKE_CXX_FLAGS  	    "${CMAKE_CXX_FLAGS} ${BUILDFLAGS}")
 # gtest
 ############################################
 
-if(WITH_TEST)
+if(UNIX AND WITH_TEST)
 
   include(FetchContent)
   FetchContent_Declare(
