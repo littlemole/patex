@@ -7,6 +7,7 @@ LIB = ./lib$(LIBNAME).a
 LIBINC = ./include/$(LIBNAME)
 
 PWD=$(shell pwd)
+SCRIPT_DIR=$( cd -- "$( dirname -- "${BASH_SOURCE[0]}" )" &> /dev/null && pwd )
 
 BUILDCHAIN = make
 CONTAINER = $(shell echo "$(LIBNAME)_$(CXX)_$(BACKEND)_$(BUILDCHAIN)" | sed 's/++/pp/')
@@ -95,6 +96,18 @@ rmc: stop ## remove docker container, if any
 rmi : ## remove existing docker image, if any
 	-docker rmi $(IMAGE)
 
+package:
+	rm -rf out
+
+	cmake --preset "gcc-debug"
+	cmake --build --preset "gcc-debug"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-debug"
+
+	cmake --preset "gcc-release"
+	cmake --build --preset "gcc-release"
+	DESTDIR=$(SCRIPT_DIR)_install cmake --build  --target install --preset="gcc-release"
+
+	cpack --config release.cmake -G DEB
 
 # self documenting makefile, see 
 # https://marmelab.com/blog/2016/02/29/auto-documented-makefile.html

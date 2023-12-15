@@ -187,3 +187,11 @@ install(FILES ${patex_BINARY_DIR}/patex-config.cmake
          ${patex_BINARY_DIR}/patex-config-version.cmake
          DESTINATION lib/patex-${VERSION})
 
+############################################
+# packaging
+############################################
+
+set(CMAKE_MODULE_PATH "${CMAKE_CURRENT_SOURCE_DIR}")
+include(package)
+         
+
