@@ -71,8 +71,8 @@ Element *XMLParser::parse(DocumentPtr doc, const std::string &input)
 
 void XMLParser::decl(const XML_Char *v, const XML_Char *e, int s)
 {
-	doc_->version(v);
-	doc_->encoding(e);
+	doc_->version(v ? v : "1.0");
+	doc_->encoding(e ? e : "utf8");
 	doc_->standalone(s);
 }
 
